@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Approval Prediction</title>
+
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            min-height:100vh;
+            padding:20px;
+        }
+
+        .container { max-width:900px; margin:auto; }
+
+        .header {
+            text-align:center;
+            color:white;
+            margin-bottom:30px;
+        }
+
+        .form-container {
+            background: rgba(255,255,255,0.95);
+            padding:40px;
+            border-radius:20px;
+        }
+
+        .section-title {
+            font-weight:bold;
+            text-align:center;
+            margin:30px 0 15px;
+        }
+
+        .info-grid,
+        .financial-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:20px;
+        }
+
+        /* ✅ KEEPING YOUR ORIGINAL STRUCTURE */
+        .form-group {
+            width:100%;
+        }
+
+        .form-group input,
+        .form-group select {
+            width:100%;
+            padding:15px;
+            border-radius:10px;
+            border:1px solid #ccc;
+        }
+
+        /* ✅ BUTTON SIZE UNTOUCHED */
+        .submit-btn {
+            margin-top:30px;
+            padding:18px;
+            width:100%;
+            border:none;
+            border-radius:50px;
+            font-size:18px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color:white;
+            cursor:pointer;
+        }
+
+        /* RESULT UI */
+        .result-card {
+            margin-top:30px;
+            padding:25px;
+            border-radius:15px;
+            background:white;
+            text-align:center;
+            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .main-result {
+            font-size:1.8rem;
+            margin-bottom:15px;
+            color:#2d3748;
+        }
+
+        .score-box {
+            font-size:1.4rem;
+            font-weight:bold;
+            padding:12px;
+            border-radius:10px;
+            background: linear-gradient(135deg,#667eea,#764ba2);
+            color:white;
+            margin-bottom:20px;
+        }
+
+        /* 🔥 ONLY NEW ADDITION */
+        .progress-container {
+            width:100%;
+            height:12px;
+            background:#e2e8f0;
+            border-radius:10px;
+            overflow:hidden;
+            margin-top:10px;
+        }
+
+        .progress-bar {
+            height:100%;
+            width:0%;
+            border-radius:10px;
+            transition:width 1s ease;
+        }
+
+        .suggestions { text-align:left; }
+        .suggestions ul { padding-left:20px; }
+        .suggestions li { margin-bottom:6px; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>💳 Loan Prediction</h1>
+        <p>AI-powered loan + CIBIL improvement system</p>
+    </div>
+
+    <div class="form-container">
+        <form method="POST" action="/predict">
+
+            <div class="section-title">Personal Information</div>
+            <div class="info-grid">
+
+                <div class="form-group">
+                    <input type="number" name="no_of_dependents" placeholder="Dependents">
+                </div>
+
+                <div class="form-group">
+                    <select name="education">
+                        <option>Graduate</option>
+                        <option>Not Graduate</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <select name="self_employed">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="cibil_score" placeholder="CIBIL Score">
+                </div>
+
+            </div>
+
+            <div class="section-title">Loan Details</div>
+            <div class="info-grid">
+
+                <div class="form-group">
+                    <input type="number" name="income_annum" placeholder="Income">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="loan_amount" placeholder="Loan Amount">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="loan_term" placeholder="Loan Term">
+                </div>
+
+            </div>
+
+            <div class="section-title">Asset Information</div>
+            <div class="financial-grid">
+
+                <div class="form-group">
+                    <input type="number" name="residential_assets_value" placeholder="Residential Assets">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="commercial_assets_value" placeholder="Commercial Assets">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="luxury_assets_value" placeholder="Luxury Assets">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="bank_asset_value" placeholder="Bank Assets">
+                </div>
+
+            </div>
+
+            <div class="section-title">Credit Behavior</div>
+            <div class="info-grid">
+
+                <div class="form-group">
+                    <input type="number" name="missed_payments" placeholder="Missed EMIs">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="credit_utilization" placeholder="Credit Utilization %">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="active_loans" placeholder="Active Loans">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="credit_history_years" placeholder="Credit History (years)">
+                </div>
+
+                <div class="form-group">
+                    <input type="number" name="credit_inquiries" placeholder="Recent Inquiries">
+                </div>
+
+            </div>
+
+            <button class="submit-btn">Predict Loan Approval</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result-card">
+
+            <h2 class="main-result">
+                {{ prediction.split('|')[0] }}
+            </h2>
+
+            {% if 'Credit Score Health' in prediction %}
+                {% set parts = prediction.split('|') %}
+
+                <div class="score-box">
+                    <p id="scoreText">{{ parts[1] }}</p>
+
+                    <!-- 🔥 GRAPH -->
+                    <div class="progress-container">
+                        <div class="progress-bar" id="scoreBar"></div>
+                    </div>
+                </div>
+
+                <div class="suggestions">
+                    <h3>Suggestions</h3>
+                    <ul>
+                        {% for item in parts[2].replace('Suggestions:','').split(',') %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+<!-- 🔥 GRAPH SCRIPT -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const text = document.getElementById("scoreText");
+    if (!text) return;
+
+    const score = parseInt(text.innerText.match(/\d+/)[0]);
+    const bar = document.getElementById("scoreBar");
+
+    bar.style.width = score + "%";
+
+    if (score < 40) bar.style.background = "#e53e3e";
+    else if (score < 70) bar.style.background = "#ecc94b";
+    else bar.style.background = "#38a169";
+});
+</script>
+
+</body>
+</html>

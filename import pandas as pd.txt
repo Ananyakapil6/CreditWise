@@ -1,0 +1,25 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.style.use("default")
+sns.set_theme()
+
+
+df = pd.read_csv(r"C:/Users/anmol/Downloads/iris.csv")
+
+
+feature_columns = [
+    "sepal_length",
+    "sepal_width",
+    "petal_length",
+    "petal_width"
+]
+
+
+print(df.tail())
+
+df[feature_columns].hist(figsize=(10, 8))
+plt.suptitle("Feature Distributions", fontsize=14)
+plt.show()
+sns.countplot(x=target_column , data = df)
