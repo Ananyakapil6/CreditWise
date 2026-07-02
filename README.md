@@ -152,16 +152,14 @@ http://127.0.0.1:5000
 
 ---
 
+
+
+
 ## 📸 Project Preview
 
-
-
-
-```
 <img width="1920" height="1080" alt="Screenshot 2026-07-01 190030" src="https://github.com/user-attachments/assets/a4ee4868-5480-43c3-98e6-d31e45ecdec7" />
-<img width="1902" height="665" alt="Screenshot 2026-07-01 190111" src="https://github.com/user-attachments/assets/d62fd288-fbf6-49b0-bd06-d5aba036ddbd" />
 
-```
+<img width="1902" height="665" alt="Screenshot 2026-07-01 190111" src="https://github.com/user-attachments/assets/d62fd288-fbf6-49b0-bd06-d5aba036ddbd" />
 
 ---
 
